@@ -35,21 +35,31 @@ void loop() {
   sensorValue = analogRead(sensorPin); // read the value from the sensor
   //Button code
   val = digitalRead(buttonin);
-  if(sensorValue < 300) {  //if light is being detected, move servo to open
-    move_servo_back();
-    Serial.println(1);
+  Serial.print("Button is ");
+  Serial.print(val);
+  Serial.println();
+  Serial.print("Sensor is ");
+  Serial.print(sensorValue);
+  Serial.println();
+  if(val == HIGH) {
+    while(sensorValue > 300) {
+      move_servo_open();
+    }
   }
-  else if(val == HIGH) {
-    move_servo_back();
-    Serial.println(10);   
-  } else {
+  else if(val == LOW) {
     move_servo();
   }
 }
 
-void move_servo_back() {
+void move_servo_open() {
   myservo.write(15);
   delay(15);
+  sensorValue = analogRead(sensorPin); // read the value from the sensor
+  Serial.println("Servo currently opened");
+  if(sensorValue < 300) {
+    move_servo();
+    Serial.println("Servo closed");
+  }
 }
 
 void move_servo() {
