@@ -1,4 +1,4 @@
-//Motor vars
+  //Motor vars
 int pwm = 6;  // Power for motor
 int ina = 5;
 int inb = 4;

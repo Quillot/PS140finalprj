@@ -41,13 +41,16 @@ void loop() {
   Serial.print("Sensor is ");
   Serial.print(sensorValue);
   Serial.println();
-  if(val == HIGH) {
-    while(sensorValue > 300) {
-      move_servo_open();
+  if(val == HIGH) {  // if button is pressed
+    while(sensorValue > 300) {  // while light is hitting sensor
+      move_servo_open();  // open the servo
+    }
+    if(sensorValue < 300) {
+      move_servo_open_hold();
     }
   }
   else if(val == LOW) {
-    move_servo();
+    move_servo_close();
   }
 }
 
@@ -56,13 +59,18 @@ void move_servo_open() {
   delay(15);
   sensorValue = analogRead(sensorPin); // read the value from the sensor
   Serial.println("Servo currently opened");
-  if(sensorValue < 300) {
-    move_servo();
+  if(sensorValue < 300) {  // if sensor gets covered
+    move_servo_close();  // close servo
     Serial.println("Servo closed");
   }
 }
 
-void move_servo() {
+void move_servo_open_hold() {
+  myservo.write(15);
+  delay(15);
+}
+
+void move_servo_close() {
   myservo.write(115);
   delay(15);  
 }
